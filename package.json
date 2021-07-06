@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/PamelaSohWY/alternativelab5july/issues"
   },
-  "homepage": "https://github.com/PamelaSohWY/alternativelab5july#readme"
+  "homepage": "https://github.com/PamelaSohWY/alternativelab5july#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "hbs": "^4.1.2",
+    "wax-on": "^1.2.2"
+  }
 }

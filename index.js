@@ -1,6 +1,6 @@
 const express = require("express");
 const hbs = require ("hbs");
-const wax = requaire ("wax-on");
+const wax = require ("wax-on");
 require("dotenv").config();
 
 //create an instance of express app 
@@ -24,10 +24,12 @@ app.use(
 );
 
 async function main() {
+   
+     app.use('/', landingRoutes);
+    
+};
 
-}
-
-main();
+main()
 
 app.listen(3000,()=>{
     console.log("Server has started");
