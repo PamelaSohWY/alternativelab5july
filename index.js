@@ -23,10 +23,11 @@ app.use(
     })
 );
 
+//loading in  route files 
+const landingRoutes = require('./routes/landing')
+
 async function main() {
-   
      app.use('/', landingRoutes);
-    
 };
 
 main()
