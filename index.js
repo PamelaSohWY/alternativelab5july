@@ -25,12 +25,13 @@ app.use(
 
 //loading in  route files 
 const landingRoutes = require('./routes/landing')
-
+const productRoutes = require("./routes/products")
 async function main() {
      app.use('/', landingRoutes);
+     app.use("/product", productRoutes)
 };
 
-main()
+main();
 
 app.listen(3000,()=>{
     console.log("Server has started");
