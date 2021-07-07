@@ -114,6 +114,11 @@ router.post('/:product_id/delete', async(req,res)=>{
     });
     await product.destroy();
     res.redirect('/products')
+    
+    // res.render('products/delete', {
+    //     'products':product.toJSON()
+    // })
+
 })
 
 
