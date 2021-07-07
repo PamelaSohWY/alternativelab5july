@@ -8,7 +8,9 @@ const {Product, Category} = require('../models')
 
 router.get('/', async (req, res) => {
 // #2 - fetch all the products (ie. select * from products)
-let products = await Product.collection().fetch();
+let products = await Product.collection().fetch({
+    WithRelated:['category']
+});
 res.render('products/index',{
     'products': products.toJSON() //#3 convert collection to JSON
 })
@@ -51,12 +53,18 @@ router.get('/:product_id/update',async (req,res)=>{
             require:true
         });
 
-   const productForm = createProductForm();
+//fetch all the categories 
+const allCategories = await (await (await Category.fetchAll().map((category)=>{
+    return [category.get('id'), category.get('name')];
+})
+
+   const productForm = createProductForm(allCategories);
    
 //  Fill in existing values 
 productForm.fields.name.value = product.get('name');
 productForm.fields.cost.value = product.get('cost');
 productForm.fields.description.value = product.get('description');
+productForm.fields.category_id.value = product.get('category_id');
 
 res.render('products/update',{
 'form': productForm.toHTML(bootstrapField),
@@ -66,15 +74,20 @@ res.render('products/update',{
 
 //Route to process the submitted form 
 router.post ('/:product_id/update', async (req, res) => {
+// fetch all the categories
+const allCategories = await (await Category.fetchAll()).map((category)=>{
+    return [category.get('id'), category.get('name')]
+})
+
 //fetch the product that we want to update
 const product = await Product.where({
     'id':req.params.product_id
 }).fetch({
-    require: true
+    required: true
 })
 
 //Process the form 
-const productForm = createProductForm();
+const productForm = createProductForm(allCategories);
 productForm.handle(req,{
     'success':async(form) => {
         product.set(form.data);
