@@ -26,7 +26,7 @@ return '<div class="form-group">'+ label + widget + error + '</div>';
 
 };//bootstrap component
 
-const createProductForm = () => {
+const createProductForm = (categories) => {
 return forms.create({
 'name': fields.string({
 required: true,
@@ -52,6 +52,17 @@ label:['form-label']
 },
 
 }),
+
+'category_id':fields.string({
+label:'Category',
+required: true,
+errorAfterField: true,
+cssClasses:{
+    label:['form-label']
+}, 
+widget: forms.widgets.select(),
+choices:categories
+})
 
 })
 };

@@ -4,7 +4,7 @@ const router = express.Router();
 const {bootstrapField, createProductForm} = require ('../forms');
 
 // #1 import in the Product Model 
-const {Product} = require('../models')
+const {Product, Category} = require('../models')
 
 router.get('/', async (req, res) => {
 // #2 - fetch all the products (ie. select * from products)
@@ -119,7 +119,35 @@ router.post('/:product_id/delete', async(req,res)=>{
     //     'products':product.toJSON()
     // })
 
-})
+}) //end of post 
 
+router.post('create', async (req,res) => {
+const all Categories = await (await Category.fetchAll()).invokeMap((category) => {
+    return [category.get('id'), category.get('name')];
+})
+const productForm = createProductForm(allCategories);
+}) //allow the user to select the category which their product belongs to 
+
+router.post('create', async(req,res)=>{
+//1. Read in all the categories 
+const allCategories = await (await Category.fetchAll()).invokeMap((category) => {
+return [category.get('id'), category.get('name')];
+}
+) //end of post
+
+const productForm = createProductForm(allCategories);
+productForm.handle(req, {
+    //2. Save data from form into the new product instance 
+    const product = new Product(form.data);
+    await product.save();
+    res.redirect('/products');
+}, 
+'error': async (form) =>{
+res.render('products/create',{
+    'form':form.toHTML(bootstrapField)
+})
+}
+})
+})//end for productForm.handle
 
 module.express = router;
